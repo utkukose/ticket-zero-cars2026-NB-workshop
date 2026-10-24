@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 4 · Ticket Zero — the game</title>
+<meta name="description" content="Part 4 of the workshop: the Ticket Zero platform, how the live game runs through the attack and defense phases, and how to join and play.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314122b'/%3E%3Crect x='14' y='22' width='36' height='20' rx='3' fill='none' stroke='%23ffd23f' stroke-width='4'/%3E%3Cline x1='32' y1='22' x2='32' y2='42' stroke='%23ff3d81' stroke-width='3' stroke-dasharray='3 3'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-page="p4" data-part="p4">
+<header id="site-top"></header>
+
+<main>
+  <section class="coldopen grid-bg">
+    <div class="wrap">
+      <p class="part-tag"><strong>Part 4 · Play</strong><span>~18 minutes</span></p>
+      <h1>Ticket Zero</h1>
+      <p class="question">Now the room does it, live and together: a game built on everything in Parts 1 to 3.</p>
+      <div class="row begin">
+        <button class="btn primary big" type="button" data-begin>How it runs</button>
+        <a class="btn big" id="join-top" href="#" target="_blank" rel="noopener">&#9654; Join the live range</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="station" data-station>
+    <div class="wrap">
+      <div class="station-head">
+        <p class="station-index">Station 1 · the flow</p>
+        <h2>Two phases, mapped to this workshop</h2>
+        <p class="lead">Ticket Zero runs in two halves that match what you just learned. In the attack phase the room does Part 2: everyone tries to make a simulated support agent, SUPPORTBOT for the fictional Northwind Devices, break its own rules. In the defense phase the room does Part 3: everyone arms the agent's architecture against the same attacks. One shared wall shows it all.</p>
+      </div>
+      <figure><img class="shot" src="images/wall.png" alt="The shared wall during the attack phase, showing the agent core, the leaderboard and the live feed"><figcaption>The shared wall: the agent core under siege, the live leaderboard, and every attempt as it lands.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="station alt" data-station>
+    <div class="wrap">
+      <div class="station-head">
+        <p class="station-index">Station 2 · the three screens</p>
+        <h2>Where everyone looks</h2>
+        <p class="lead">You play on your own device at the range. The room watches one shared wall. The facilitator drives the session from a private control panel.</p>
+      </div>
+      <div class="grid-3">
+        <figure><img class="shot" src="images/player-attack.png" alt="The player range"><figcaption><strong class="gd">The range</strong> — your device. Write tickets, read the agent's console, capture flags.</figcaption></figure>
+        <figure><img class="shot" src="images/wall-defense.png" alt="The shared wall"><figcaption><strong class="gd">The wall</strong> — projected. Leaderboard, live feed, the agent reacting in real time.</figcaption></figure>
+        <figure><img class="shot" src="images/control.png" alt="The control panel"><figcaption><strong class="gd">The control panel</strong> — facilitator only. Starts each phase and keeps the scores.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="station" data-station>
+    <div class="wrap">
+      <div class="station-head">
+        <p class="station-index">Station 3 · the attack phase</p>
+        <h2>Climb the flag ladder</h2>
+        <p class="lead">You write a ticket, the agent's console reacts step by step, and a capture lands when the agent leaks a secret or takes a forbidden action. Each flag is a class of real attack, and each capture shows why it matters.</p>
+      </div>
+      <div class="grid-2">
+        <div class="app" style="padding:0;overflow:auto">
+          <table>
+            <thead><tr><th>Flag</th><th>What you do</th></tr></thead>
+            <tbody>
+              <tr><td class="mag">Map the agent</td><td>Enumerate its tools, including the undocumented ones</td></tr>
+              <tr><td class="mag">Loose lips</td><td>Make it disclose an internal secret</td></tr>
+              <tr><td class="mag">Free money</td><td>Issue a credit beyond policy, or to another account</td></tr>
+              <tr><td class="mag">Postman</td><td>Exfiltrate another customer's record off-system</td></tr>
+              <tr><td class="mag">Sleeper</td><td>Plant an instruction in a profile and make it run on lookup</td></tr>
+              <tr><td class="mag">Kill chain</td><td>Chain reconnaissance, disclosure and exfiltration</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figure><img class="shot" src="images/player-attack.png" alt="Player attack view with the agent console and the flag ladder"><figcaption>Write a ticket, read what the agent did, capture flags. Each capture carries a short lesson.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="station alt" data-station>
+    <div class="wrap">
+      <div class="station-head">
+        <p class="station-index">Station 4 · the defense phase</p>
+        <h2>Arm the architecture under pressure</h2>
+        <p class="lead">The room switches sides. Each round shows two possible next attacks; you arm at most two controls and commit by pressing Ready. When everyone is ready, one of the two fires and you are scored on what you chose. The best-fitting control scores full, a control that also helps scores partial, and the weak blocklist scores nothing.</p>
+      </div>
+      <figure><img class="shot" src="images/player-defense.png" alt="Player defense view with two candidate attacks and the armed controls"><figcaption>Two possible attacks, arm up to two controls, commit before the wave fires.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="station" data-station>
+    <div class="wrap">
+      <div class="station-head">
+        <p class="station-index">Station 5 · play</p>
+        <h2>Join in four steps</h2>
+        <p class="lead">No install, and no account beyond a username you choose.</p>
+      </div>
+      <div class="cards">
+        <div class="card gd"><div class="nm">1 · Open</div><div class="d">Open the join link the facilitator shares, or scan the QR on the wall.</div></div>
+        <div class="card gd"><div class="nm">2 · Sign in</div><div class="d">Pick any username and password. A short tutorial gets you started.</div></div>
+        <div class="card gd"><div class="nm">3 · Attack</div><div class="d">In the attack phase, try the techniques from Part 2 against SUPPORTBOT.</div></div>
+        <div class="card gd"><div class="nm">4 · Defend</div><div class="d">In the defense phase, arm the controls from Part 3 and read the waves.</div></div>
+      </div>
+      <div class="app" style="margin-top:20px;text-align:center;border-color:var(--gold)">
+        <p style="margin-top:0">The range is live during the session.</p>
+        <div class="row" style="justify-content:center">
+          <a class="btn primary big" id="join" href="#" target="_blank" rel="noopener">&#9654; Join the live range</a>
+          <a class="btn" href="https://github.com/utkukose/ticket-zero-cars2026-NB-workshop" target="_blank" rel="noopener">Source &amp; self-host</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-next="close"></section>
+</main>
+
+<footer data-footer></footer>
+<script src="assets/site.js"></script>
+<script>
+  (function () {
+    var url = TZSite.APP_URL;
+    ["join", "join-top"].forEach(function (id) {
+      var a = document.getElementById(id); if (!a) return;
+      if (url) { a.href = url; } else { a.textContent = "▶ Join link shared during the session"; a.removeAttribute("target"); a.addEventListener("click", function (e) { e.preventDefault(); }); }
+    });
+  })();
+</script>
+</body>
+</html>

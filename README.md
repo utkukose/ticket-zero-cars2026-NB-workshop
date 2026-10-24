@@ -138,7 +138,7 @@ TZ_SECRET="..." TZ_PRESENTER_KEY="..." uvicorn server.app:app --host 0.0.0.0 --p
 | Path | What it holds |
 |---|---|
 | `README.md` | This page |
-| `index.html` | The interactive lesson, published with GitHub Pages |
+| `docs/` | The interactive lesson site (GitHub Pages): a station-based deck across a start page, four parts and a close, with an in-browser agent to attack and defend |
 | `FACILITATOR.md` | How to run a live session |
 | `docs/prompt-injection-primer.md` | The techniques and defenses, with references |
 | `screenshots/` | The images used on this page |

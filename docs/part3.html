@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 3 · The defenses — Ticket Zero</title>
+<meta name="description" content="Part 3 of the Ticket Zero workshop: the architectural controls that stop prompt injection, why a blocklist does not, with a live in-page agent to defend.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314122b'/%3E%3Crect x='14' y='22' width='36' height='20' rx='3' fill='none' stroke='%2358f5b0' stroke-width='4'/%3E%3Cline x1='32' y1='22' x2='32' y2='42' stroke='%2337d6ff' stroke-width='3' stroke-dasharray='3 3'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-page="p3" data-part="p3">
+<header id="site-top"></header>
+
+<main>
+  <section class="coldopen grid-bg">
+    <div class="wrap">
+      <p class="part-tag"><strong>Part 3 · Defense</strong><span>~12 minutes</span></p>
+      <h1>The defenses</h1>
+      <p class="question">Protection comes from how the agent is built, not from the wording of the message.</p>
+      <div class="row begin"><button class="btn primary big" type="button" data-begin>Begin</button></div>
+    </div>
+  </section>
+
+  <section class="station" data-station>
+    <div class="wrap">
+      <div class="station-head">
+        <p class="station-index">Station 1 · predict</p>
+        <h2>The tempting wrong answer</h2>
+        <p class="lead">The obvious fix is to filter tickets that contain attack phrases. You turn on a phrase blocklist. Does it stop the authority attack from Part 2?</p>
+      </div>
+      <div class="app">
+        <p class="poll-label">Your prediction</p>
+        <div class="poll" id="poll1">
+          <button type="button" data-value="a">Yes, it blocks it</button>
+          <button type="button" data-value="b">No, the disguise slips past</button>
+          <button type="button" data-value="c">It blocks everything, including real customers</button>
+        </div>
+        <div class="takeaway" id="t1" hidden>A blocklist catches only the undisguised attempts. Authority framing, a fake system tag, an encoded payload, or data-planted instructions all carry the same objective past it, and it also rejects legitimate customers whose wording happens to match. It is the one control in the game that is there to be defeated. The useful controls act on the architecture.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="station alt" data-station>
+    <div class="wrap">
+      <div class="station-head">
+        <p class="station-index">Station 2 · the controls</p>
+        <h2>Four controls that actually hold</h2>
+        <p class="lead">No single one stops everything without also turning away a real customer, so a real deployment layers them.</p>
+      </div>
+      <div class="cards">
+        <div class="card def"><div class="nm">Separate read from act</div><div class="d">Treat the ticket and retrieved text as data only, so no action is derived from it. The most general answer to injection, direct or indirect.</div></div>
+        <div class="card def"><div class="nm">Limit connections</div><div class="d">Disconnect external tools so nothing can leave the system. An agent that cannot send cannot exfiltrate.</div></div>
+        <div class="card def"><div class="nm">Human in the loop</div><div class="d">Queue consequential actions, a credit or an outbound message, for a person to approve.</div></div>
+        <div class="card def"><div class="nm">Check the output</div><div class="d">Scan anything leaving the agent for secrets and personal data. A backstop when an upstream control is missed.</div></div>
+        <div class="card weak"><div class="nm">Block bad phrases</div><div class="d">A blocklist that is easy to slip past, and rejects real customers. Included to be defeated.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="station" data-station>
+    <div class="wrap">
+      <div class="station-head">
+        <p class="station-index">Station 3 · try it</p>
+        <h2>Defend the agent</h2>
+        <p class="lead">The same in-page agent. First send an attack that lands, such as the authority ticket. Then arm a control on the right and send it again: watch it get stopped. Try the weak blocklist against the authority or encoded attack, and watch it still land.</p>
+      </div>
+      <div id="agent-demo"></div>
+      <div class="takeaway" style="margin-top:22px">An egress filter does not stop a fraudulent credit, and a human-approval gate does not stop a prompt from being extracted. Each stage needs its own control.</div>
+    </div>
+  </section>
+
+  <section data-next="p4"></section>
+</main>
+
+<footer data-footer></footer>
+<script src="assets/site.js"></script>
+<script src="assets/agent.js"></script>
+<script>
+  TZSite.poll(document.getElementById("poll1"), "p3-s1", function () { TZSite.reveal(document.getElementById("t1")); });
+  TZAgent.mount(document.getElementById("agent-demo"));
+</script>
+</body>
+</html>

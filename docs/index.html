@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ticket Zero — IEEE CARS 2026 Workshop</title>
+<meta name="description" content="Cybersecurity in the Age of AI Assistants: an interactive workshop on prompt injection. Learn how AI assistants are attacked and defended, then play the Ticket Zero CTF.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314122b'/%3E%3Crect x='14' y='22' width='36' height='20' rx='3' fill='none' stroke='%2337d6ff' stroke-width='4'/%3E%3Cline x1='32' y1='22' x2='32' y2='42' stroke='%23ff3d81' stroke-width='3' stroke-dasharray='3 3'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-page="start" data-part="start">
+<header id="site-top"></header>
+
+<main>
+  <section class="coldopen grid-bg">
+    <div class="wrap">
+      <p class="part-tag"><strong>IEEE CARS 2026 · R4 workshop</strong><span>28 October 2026 · online · about one hour</span></p>
+      <img src="images/logo.png" alt="Ticket Zero" style="width:min(680px,100%);display:block;margin:6px 0 18px;border:2px solid var(--line)">
+      <h1>Cybersecurity in the Age of AI Assistants</h1>
+      <p class="subtitle">What everyone should know</p>
+      <p class="claim">Anything an AI assistant reads is untrusted input.</p>
+      <p class="lead">An assistant that acts on what it reads can be given instructions by anyone whose text reaches it. This session shows how that fails, and how to defend it, with a few interactive pages and a live game. First the idea, with stations you predict before they reveal. Then Ticket Zero, where the room attacks a simulated support agent and then defends it.</p>
+      <div class="row begin">
+        <button class="btn primary big" type="button" data-begin>See how the hour works</button>
+        <a class="btn big" href="part1.html">Start Part 1</a>
+      </div>
+      <p class="venue">Prof. Dr. Utku Köse. Organized by the Center for Cyber Security Research (C2SR), University of North Dakota, Grand Forks, ND, USA.</p>
+    </div>
+  </section>
+
+  <section class="station" data-station id="plan">
+    <div class="wrap">
+      <div class="station-head">
+        <p class="station-index">The plan</p>
+        <h2>Five stops, teach first and then play</h2>
+        <p class="lead">Each part opens with a short idea and a few stations. A station asks you to predict, then reveals the answer. Part 4 opens the Ticket Zero platform and walks through how to play it.</p>
+      </div>
+      <div class="journey" id="journey"></div>
+    </div>
+  </section>
+
+  <section class="station alt" data-station id="how">
+    <div class="wrap grid-2">
+      <div>
+        <p class="station-index">How it works</p>
+        <h2>On these pages, and in the game</h2>
+        <p class="lead">Every page runs in your browser, and nothing you type into a page leaves it. The in-page agent in Parts 2 and 3 is a small copy you can attack and defend safely. The full game, Ticket Zero, is a separate live app you join on your own device during the session; the facilitator shares the link.</p>
+        <p class="note">Progress and predictions are kept only in this browser and are used for a short debrief at the close.</p>
+      </div>
+      <div class="app">
+        <h3 style="margin-top:0">Move around</h3>
+        <dl class="help-keys" style="display:grid;grid-template-columns:auto 1fr;gap:10px 16px;margin:6px 0 0">
+          <dt><kbd>&rarr;</kbd> <kbd>&larr;</kbd></dt><dd class="muted">next or previous station</dd>
+          <dt><kbd>]</kbd> <kbd>[</kbd></dt><dd class="muted">next or previous part</dd>
+          <dt><kbd>T</kbd></dt><dd class="muted">night or paper view</dd>
+          <dt><kbd>F</kbd></dt><dd class="muted">full screen</dd>
+          <dt><kbd>?</kbd></dt><dd class="muted">all shortcuts</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section data-next="p1"></section>
+</main>
+
+<footer data-footer></footer>
+<script src="assets/site.js"></script>
+<script>
+  (function () {
+    var J = document.getElementById("journey");
+    TZSite.PAGES.filter(function (p) { return p.id !== "start"; }).forEach(function (p) {
+      var a = TZSite.el("a", { class: "j", href: p.href });
+      a.innerHTML = '<div class="n">' + p.label + (p.role ? " · " + p.role : "") + '</div><div class="t">' + p.title + '</div><div class="w">' + p.question + "</div>";
+      J.appendChild(a);
+    });
+  })();
+</script>
+</body>
+</html>
