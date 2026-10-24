@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ticket Zero &mdash; Wall</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    body { font-size: 24px; overflow: hidden; }
+    .wall { height: 100vh; display: flex; flex-direction: column; padding: 20px; gap: 16px; }
+    .wall-top { display: flex; align-items: center; gap: 26px; }
+    .wall-logo { font-family: var(--display); font-size: 38px; color: var(--cyan); text-shadow: 4px 4px 0 var(--magenta); }
+    .wall-conf { font-family: var(--display); font-size: 12px; color: var(--gold); margin: 8px 0 3px; letter-spacing: 1px; }
+    .wall-sub { color: var(--dim); font-size: 20px; }
+    .wall-phase { font-family: var(--display); font-size: 18px; padding: 12px 16px; border: 3px solid var(--line); }
+    .wall-phase.attack { background: var(--magenta); color: #2a0413; }
+    .wall-phase.lab { background: var(--mint); color: #04331f; }
+    .stat { font-family: var(--display); font-size: 20px; color: var(--gold); text-align: center; }
+    .stat small { display: block; color: var(--dim); font-size: 9px; margin-top: 6px; }
+
+    .wall-grid { flex: 1; display: grid; grid-template-columns: 1.55fr 1fr; gap: 16px; min-height: 0; }
+    .arena-panel { position: relative; padding: 0; overflow: hidden; }
+    #arena { width: 100%; height: 100%; display: block; }
+    .arena-tag { position: absolute; left: 14px; top: 12px; font-family: var(--display);
+      font-size: 12px; color: var(--dim); letter-spacing: 1px; pointer-events: none; }
+
+    .side { display: grid; grid-template-rows: 1fr 1fr; gap: 16px; min-height: 0; }
+    .board, .feedp { min-height: 0; display: flex; flex-direction: column; }
+    .board .head, .feedp .head { flex: 0 0 auto; }
+    .board .body, .feedp .body { padding: 0; flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+    /* pixel-themed scrollbar for the wall panels */
+    .board .body::-webkit-scrollbar, .feedp .body::-webkit-scrollbar { width: 10px; }
+    .board .body::-webkit-scrollbar-track, .feedp .body::-webkit-scrollbar-track { background: #0c0a1e; }
+    .board .body::-webkit-scrollbar-thumb, .feedp .body::-webkit-scrollbar-thumb { background: var(--line); border: 2px solid #0c0a1e; }
+    .board .body, .feedp .body { scrollbar-width: thin; scrollbar-color: var(--line) #0c0a1e; }
+    .row { display: grid; grid-template-columns: 54px 40px 1fr 70px 120px; align-items: center;
+      padding: 9px 14px; border-bottom: 2px solid var(--line); font-size: 24px; }
+    .row .rk { font-family: var(--display); font-size: 18px; color: var(--dim); }
+    .row .av { width: 28px; height: 28px; image-rendering: pixelated; }
+    .row .fl { color: var(--cyan); font-size: 20px; }
+    .row .sc { text-align: right; font-family: var(--display); font-size: 20px; color: var(--gold); }
+    .row.lead { background: linear-gradient(90deg, rgba(255,210,63,.16), transparent); }
+    .row.lead .nm { color: var(--gold); }
+    .wall-feed { display: flex; flex-direction: column; gap: 7px; padding: 10px 12px; overflow: hidden; }
+    .wall-feed .ev { font-size: 21px; padding: 8px 12px; }
+    .wall-feed .ev .av { width: 22px; height: 22px; }
+    .wall-feed .evic .ic { width: 19px; height: 19px; }
+    .wall-feed .ev.first { font-size: 23px; }
+
+    .join-box { position: absolute; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 12px;
+      background: rgba(12,10,30,0.92); border: 2px solid var(--cyan); padding: 9px 12px; }
+    .join-qr { width: 84px; height: 84px; background: #fff; padding: 5px; display: flex; }
+    .join-qr svg { width: 100%; height: 100%; display: block; }
+    .join-h { font-family: var(--display); font-size: 10px; color: var(--gold); margin-bottom: 6px; }
+    .join-url { font-family: var(--display); font-size: 15px; color: var(--cyan); margin-bottom: 8px; word-break: break-all; }
+    .join-copy { font-family: var(--display); font-size: 9px; padding: 6px 9px; cursor: pointer;
+      background: var(--cyan); color: #04222e; border: 2px solid var(--line); }
+    .join-copy.done { background: var(--mint); color: #04331f; }
+
+    .replay { position: absolute; inset: 0; background: rgba(8,6,20,0.94); display: none; flex-direction: column;
+      padding: 28px 32px; }
+    .replay.show { display: flex; }
+    .replay-head { font-family: var(--display); font-size: 22px; color: var(--magenta); text-shadow: 3px 3px 0 #2a0413; margin-bottom: 18px; }
+    .replay-trace { flex: 1; display: flex; flex-direction: column; gap: 8px; font-family: var(--mono); font-size: 26px; overflow: hidden; }
+    .replay-trace .rline { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-left: 5px solid var(--line); background: var(--bg2); opacity: 0; }
+    .replay-trace .rline.show { opacity: 1; transition: opacity .12s; }
+    .replay-trace .rline .ic { width: 24px; height: 24px; }
+    .replay-trace .k-tool { border-color: var(--amber); color: var(--amber); }
+    .replay-trace .k-act { border-color: var(--magenta); color: #ffb9d3; }
+    .replay-trace .k-block { border-color: var(--mint); color: var(--mint); }
+    .replay-trace .k-read { border-color: var(--cyan); }
+    .replay-trace .k-recv { border-color: var(--dim); }
+    .replay-trace .k-done { border-color: var(--line); color: var(--dim); }
+
+    /* The wall is built for a projector; this keeps it usable if opened on a phone. */
+    @media (max-width: 820px) {
+      body { font-size: 18px; overflow: auto; }
+      .wall { height: auto; min-height: 100vh; padding: 12px; gap: 12px; }
+      .wall-top { flex-wrap: wrap; gap: 12px 18px; }
+      .wall-logo { font-size: 24px; }
+      .wall-conf { font-size: 9px; }
+      .wall-sub { font-size: 15px; }
+      .wall-top .spacer { display: none; }
+      .wall-phase { font-size: 12px; padding: 8px 10px; }
+      .stat { font-size: 15px; }
+      /* stack as plain blocks: a block's width is the viewport, so the square
+         arena is driven by width (not stretched by the flex grid) and nothing
+         overflows sideways */
+      .wall-grid { display: block; flex: none; }
+      .arena-panel { aspect-ratio: 1 / 1; width: 100%; min-height: 0; margin-bottom: 12px; }
+      #arena { max-width: 100%; }
+      .side { display: block; min-width: 0; }
+      .side .panel { margin-bottom: 12px; }
+      .board .body, .feedp .body { max-height: 42vh; overflow: auto; }
+      .row { grid-template-columns: 34px 26px 1fr 44px 68px; font-size: 16px; padding: 7px 8px; }
+      .row .rk, .row .fl, .row .sc { font-size: 14px; }
+      .row .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .wall-feed .ev { font-size: 15px; }
+      .join-box { position: static; margin: 10px 0 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wall">
+    <div class="wall-top">
+      <div>
+        <div class="wall-logo">TICKET ZERO</div>
+        <div class="wall-conf">IEEE CARS 2026 &middot; Workshop: Cybersecurity in the Age of AI Assistants</div>
+        <div class="wall-sub">Northwind Devices &mdash; agent under siege</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="stat"><span id="w-players">0</span><small>attackers</small></div>
+      <div class="stat"><span id="w-caps">0</span><small>captures</small></div>
+      <div class="stat"><span id="w-integrity">100%</span><small>core integrity</small></div>
+      <button id="w-sound" class="wall-phase" style="cursor:pointer">SOUND OFF</button>
+      <div class="wall-phase" id="w-frozen" style="display:none;background:var(--amber);color:#3a2400">FROZEN</div>
+      <div class="wall-phase" id="w-phase">PHASE</div>
+    </div>
+    <div class="wall-grid">
+      <div class="panel arena-panel">
+        <canvas id="arena"></canvas>
+        <div class="arena-tag">SUPPORTBOT CORE</div>
+        <div class="join-box" id="join-box">
+          <div class="join-qr" id="qr"></div>
+          <div class="join-txt">
+            <div class="join-h">JOIN THE RANGE</div>
+            <div class="join-url" id="join-url">&mdash;</div>
+            <button class="join-copy" id="join-copy">Copy link</button>
+          </div>
+        </div>
+        <div class="replay" id="replay">
+          <div class="replay-head"><span id="replay-title">REPLAY</span></div>
+          <div class="replay-trace" id="replay-trace"></div>
+        </div>
+      </div>
+      <div class="side">
+        <div class="panel board">
+          <div class="head">Leaderboard</div>
+          <div class="body" id="w-board"></div>
+        </div>
+        <div class="panel feedp">
+          <div class="head">Live feed</div>
+          <div class="body"><div class="wall-feed" id="w-feed"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/static/js/avatars.js"></script>
+  <script src="/static/js/icons.js"></script>
+  <script src="/static/js/bot.js"></script>
+  <script src="/static/js/wall.js"></script>
+</body>
+</html>

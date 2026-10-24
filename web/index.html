@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ticket Zero</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- ---------------- LOGIN ---------------- -->
+  <section id="login-view">
+    <div class="login-wrap">
+      <div class="login-card panel">
+        <div class="body">
+          <div class="brand">
+            <div class="logo">TICKET ZERO</div>
+            <div class="conf">IEEE CARS 2026 &middot; Workshop</div>
+            <div class="conf2">Cybersecurity in the Age of AI Assistants</div>
+            <div class="tag">Break the support agent. Capture the flags.</div>
+          </div>
+          <div class="tabs" role="tablist">
+            <button id="tab-login" role="tab" aria-selected="true">Sign in</button>
+            <button id="tab-register" role="tab" aria-selected="false">Create user</button>
+          </div>
+          <div class="field" id="avatar-field" style="display:none">
+            <label>Choose your fighter</label>
+            <div class="avatar-pick" id="avatar-pick"></div>
+          </div>
+          <div class="field">
+            <label for="username">Username</label>
+            <input id="username" autocomplete="username" maxlength="24" placeholder="pick a handle">
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" autocomplete="current-password" placeholder="pick a password">
+          </div>
+          <div class="send-row">
+            <button id="auth-submit">Sign in</button>
+            <span class="cool" id="auth-hint">Choose any handle to appear on the board.</span>
+          </div>
+          <div class="msg" id="auth-msg"></div>
+        </div>
+      </div>
+
+      <div class="about-card panel">
+        <div class="head">About</div>
+        <div class="body about">
+          <div class="about-name">Utku Köse</div>
+          <div class="about-line">Full Professor of Computer Engineering, Süleyman Demirel University, Isparta, Turkey</div>
+          <div class="about-line">Founding Director, AI Application and Research Center (YAZEM)</div>
+          <div class="about-line">Affiliations: University of North Dakota &middot; Universidad Panamericana &middot; Vel Tech University</div>
+          <div class="about-badges"><span>IEEE Senior Member</span><span>ACM Professional Member</span></div>
+          <div class="about-links">
+            <a href="https://orcid.org/0000-0002-9652-6415" target="_blank" rel="noopener">ORCID 0000-0002-9652-6415</a>
+            <a href="https://utkukose.com" target="_blank" rel="noopener">utkukose.com</a>
+            <a href="https://github.com/utkukose" target="_blank" rel="noopener">github.com/utkukose</a>
+          </div>
+          <div class="about-foot">Built for the IEEE CARS 2026 workshop &ldquo;Cybersecurity in the Age of AI Assistants: What Everyone Should Know.&rdquo;</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------------- APP ---------------- -->
+  <main id="app-view">
+    <div class="topbar">
+      <div>
+        <div class="logo">TICKET ZERO</div>
+        <div class="sub">Northwind Devices &mdash; support desk</div>
+      </div>
+      <div class="conf-tag">IEEE CARS 2026 &middot; Cybersecurity in the Age of AI Assistants</div>
+      <div class="spacer"></div>
+      <div class="pill" id="phase-pill">PHASE</div>
+      <canvas id="hud-avatar" class="av hud-av" width="16" height="16"></canvas>
+      <div class="hud">
+        <div class="name" id="hud-name">&mdash;</div>
+        <div class="score"><span id="hud-score">0</span> pts</div>
+      </div>
+      <button class="ghost" id="help-btn" title="How to play" aria-label="How to play">?</button>
+      <button class="ghost" id="logout">Exit</button>
+    </div>
+
+    <div class="grid">
+      <!-- left: compose + defenses -->
+      <div class="col">
+        <div class="panel" id="defense-round-panel" style="display:none">
+          <div class="head"><span id="dr-title">Defense</span> <span id="dr-countdown" class="dr-countdown"></span></div>
+          <div class="body">
+            <div id="dr-status" class="dr-status">Waiting for the host to start the round&hellip;</div>
+            <div id="def-toggle-label" class="def-slot-label">Your defenses &mdash; tap to arm (max 2)</div>
+            <div id="def-toggle-slot" class="def-toggle-slot"><div class="body" id="defenses"></div></div>
+            <button id="dr-ready" class="dr-ready" style="display:none">I'm ready &mdash; run the attacks</button>
+            <div id="dr-scoreline" class="dr-scoreline" style="display:none"><span>Your defense score</span><b id="dr-score">0</b></div>
+            <div id="dr-wave" class="dr-wave" style="display:none"></div>
+            <div id="dr-log" class="dr-log"></div>
+            <div class="dr-tip">Arm the controls you think will stop the attacks, then hit Ready. No single control stops everything without also turning away a real customer &mdash; find the balance.</div>
+            <div class="dr-boardwrap" id="dr-boardwrap" style="display:none">
+              <div class="dr-boardhead">Top defenders</div>
+              <div id="dr-board" class="dr-board"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="compose-panel">
+          <div class="head">Compose ticket</div>
+          <div class="body">
+            <div class="tipbox" id="tipbox" style="display:none">
+              <button class="tip-x" id="tip-x" aria-label="Dismiss">&times;</button>
+              <div class="tip-h">How to play</div>
+              <div class="tip-b">You are a customer messaging SUPPORTBOT. Write a ticket that makes it break its own rules: leak an internal secret, move money, or hand over another customer's data. Watch the agent console in the middle to see what your words actually made it do, capture flags on the right for points, and open a Hint on any flag if you get stuck. Tap a starter prompt below to begin.</div>
+            </div>
+            <div class="frozen-banner" id="frozen-banner" style="display:none">Submissions are frozen by the host.</div>
+            <textarea id="ticket" placeholder="Write a message to the support agent..."></textarea>
+            <div class="send-row">
+              <button id="send">Send ticket</button>
+              <span class="cool" id="cooldown"></span>
+            </div>
+            <div class="acct">Signed in as customer <b id="acct">ACME-1007</b></div>
+            <div class="hint-chips" id="hints"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- center: agent console + outbox + live feed -->
+      <div class="col">
+        <div class="panel" id="console-panel">
+          <div class="head">Agent console</div>
+          <div class="body">
+            <div class="agent-head">
+              <canvas id="agent-canvas" width="16" height="16"></canvas>
+              <div class="agent-meta">
+                <div class="who">SUPPORTBOT</div>
+                <div class="agent-state idle" id="agent-state">STANDBY</div>
+              </div>
+            </div>
+            <div class="def-theater" id="def-theater" style="display:none"></div>
+            <div class="trace" id="trace"></div>
+            <div class="reveal" id="reveal"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="head">Outbox &amp; actions</div>
+          <div class="body" id="ledger"><span class="cool">No actions yet.</span></div>
+        </div>
+        <div class="panel">
+          <div class="head">Live feed</div>
+          <div class="body"><div class="feed" id="feed"></div></div>
+        </div>
+      </div>
+
+      <!-- right: leaderboard + flags -->
+      <div class="col">
+        <div class="panel" id="lb-panel">
+          <div class="head">Leaderboard</div>
+          <div class="body">
+            <table class="lb">
+              <thead><tr><th class="rank">#</th><th>Player</th><th>Flags</th><th style="text-align:right">Score</th></tr></thead>
+              <tbody id="lb-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="head">Flags</div>
+          <div class="body" id="flags"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ---------------- TUTORIAL ---------------- -->
+  <div id="tutorial" class="tut" style="display:none">
+    <div class="tut-card panel">
+      <div class="tut-top">
+        <span class="tut-step" id="tut-step">1 / 5</span>
+        <span class="tut-mode" id="tut-mode" style="display:none"></span>
+      </div>
+      <div class="tut-h" id="tut-h"></div>
+      <div class="tut-vis" id="tut-vis"></div>
+      <div class="tut-b" id="tut-b"></div>
+      <div class="tut-nav">
+        <button class="ghost" id="tut-skip">Skip</button>
+        <span class="tut-dots" id="tut-dots"></span>
+        <button id="tut-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------- INTERFACE TOUR (coachmarks) ---------------- -->
+  <div id="coach" style="display:none">
+    <div class="coach-hole" id="coach-hole"></div>
+    <div class="coach-tip" id="coach-tip">
+      <div class="coach-step" id="coach-step"></div>
+      <div class="coach-h" id="coach-h"></div>
+      <div class="coach-b" id="coach-b"></div>
+      <div class="coach-nav">
+        <button class="ghost" id="coach-prev">Back</button>
+        <button class="ghost" id="coach-skip">Skip</button>
+        <button id="coach-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toasts"></div>
+  <script src="/static/js/avatars.js"></script>
+  <script src="/static/js/icons.js"></script>
+  <script src="/static/js/bot.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ticket Zero &mdash; Control</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    body { padding: 22px; max-width: 760px; margin: 0 auto; }
+    h1 { font-family: var(--display); font-size: 20px; color: var(--cyan); text-shadow: 3px 3px 0 var(--magenta); margin: 0 0 4px; }
+    .sub { color: var(--dim); font-size: 16px; margin-bottom: 18px; }
+    .panel { margin-bottom: 16px; }
+    .panel .body { padding: 16px; }
+    .rowline { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+    label.k { font-family: var(--display); font-size: 8px; color: var(--dim); }
+    button { font-family: var(--display); font-size: 10px; }
+    button.on { background: var(--mint); color: #04331f; }
+    button.off { background: var(--panel2); color: var(--dim); }
+    button.danger { background: var(--magenta); color: #2a0413; }
+    input[type=number], input[type=password], input[type=text] { background: #0c0a1e; color: var(--ink); border: 2px solid var(--line); padding: 8px; font-family: var(--mono); font-size: 16px; }
+    .status b { color: var(--gold); }
+    .status span { margin-right: 16px; }
+    .rep { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 2px solid var(--line); font-size: 16px; }
+    .msg { color: var(--mint); font-size: 15px; min-height: 20px; }
+    a.dl { color: var(--cyan); }
+    .pt { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 2px solid var(--line); font-size: 15px; flex-wrap: wrap; }
+    .pt .av { flex: 0 0 auto; }
+    .pt .nm { font-family: var(--mono); color: var(--ink); min-width: 120px; }
+    .pt .nm.banned { color: var(--dim); text-decoration: line-through; }
+    .pt .meta { color: var(--dim); font-size: 13px; min-width: 112px; }
+    .pt .spacer { flex: 1 1 auto; }
+    .pt input.sc { width: 66px; padding: 6px; }
+    .pt button { padding: 6px 8px; }
+    .badge { font-family: var(--display); font-size: 7px; padding: 4px 6px; border: 2px solid var(--line); }
+    .b-live { color: #04331f; background: var(--mint); border-color: #04331f; }
+    .b-idle { color: var(--dim); background: var(--panel2); }
+    .b-ban { color: #2a0413; background: var(--magenta); border-color: #2a0413; }
+    .b-turn { color: #3a2a00; background: var(--gold); border-color: #3a2a00; }
+    .pt-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .pt-head .count { color: var(--dim); font-size: 14px; }
+    /* growing lists get their own scroll so they never push the page around */
+    #participants, #replays { max-height: 340px; overflow-y: auto; }
+    #participants::-webkit-scrollbar, #replays::-webkit-scrollbar { width: 10px; }
+    #participants::-webkit-scrollbar-track, #replays::-webkit-scrollbar-track { background: #0c0a1e; }
+    #participants::-webkit-scrollbar-thumb, #replays::-webkit-scrollbar-thumb { background: var(--line); border: 2px solid #0c0a1e; }
+    #participants, #replays { scrollbar-width: thin; scrollbar-color: var(--line) #0c0a1e; }
+  </style>
+</head>
+<body>
+  <h1>TICKET ZERO &mdash; CONTROL</h1>
+  <div class="sub">Presenter panel. Keep this tab private.</div>
+
+  <div class="panel"><div class="body">
+    <div class="rowline">
+      <label class="k" for="key">Presenter key</label>
+      <input id="key" type="password" placeholder="TZ_PRESENTER_KEY" style="flex:1">
+      <button id="save">Use key</button>
+    </div>
+    <div class="status" id="status">&mdash;</div>
+  </div></div>
+
+  <div class="panel"><div class="body">
+    <div class="rowline"><label class="k">View</label>
+      <button id="ph-attack">Attack phase</button>
+      <button id="ph-lab">Defense lab</button>
+    </div>
+    <div class="rowline" id="attack-controls"><label class="k">New scenario</label>
+      <button id="at-start" style="background:#3a2a12;border-color:#c98a2a;color:#ffd79a">⚔ Attack mode start</button>
+    </div>
+    <div class="status" id="phase-info">Scores reset <b>only</b> when you start a scenario: “Attack mode start” zeroes <b>attack</b> scores, “Start rounds” zeroes <b>defense</b> scores. Switching the view, or refreshing the wall, never resets anything.</div>
+    <div class="rowline"><label class="k">Submissions</label>
+      <button id="freeze">Freeze</button>
+      <button id="unfreeze">Unfreeze</button>
+    </div>
+    <div class="rowline"><label class="k">Cooldown (s)</label>
+      <input id="cd" type="number" min="0" max="60" step="0.5" value="2.5" style="width:90px">
+      <button id="cd-apply">Apply</button>
+    </div>
+    <div class="msg" id="msg"></div>
+  </div></div>
+
+  <div class="panel" id="defense-controls"><div class="body">
+    <div class="rowline"><label class="k">Defense rounds</label>
+      <input id="dt-dur" type="number" min="10" max="300" step="5" value="30" style="width:80px" title="seconds per round">
+      <button id="dt-start">Start rounds</button>
+      <button id="dt-next">Skip to result</button>
+      <button id="dt-stop" class="off">Stop</button>
+    </div>
+    <div class="status" id="dt-info">All players arm up to 2 controls each round and hit Ready; when everyone is ready (or the timer ends) one of two candidate attacks fires and is scored. "Skip to result" ends the current pick window now.</div>
+    <div class="rowline" style="margin-top:12px; display:none"><label class="k">Defense round (sim)</label>
+      <input id="dr-dur" type="number" min="20" max="600" step="6" value="96" style="width:80px" title="duration in seconds">
+      <button id="dr-start">Start round</button>
+      <button id="dr-stop" class="off">Stop</button>
+    </div>
+  </div></div>
+
+  <div class="panel"><div class="body">
+    <div class="rowline"><label class="k">Replays</label>
+      <button id="refresh-rep">Refresh</button>
+      <a class="dl" id="csv" href="#" target="_blank">Download results CSV</a>
+      <button id="clear-feed">Clear live feed</button>
+    </div>
+    <div id="replays"></div>
+  </div></div>
+
+  <div class="panel"><div class="body">
+    <div class="pt-head">
+      <label class="k">Participants</label>
+      <button id="refresh-users">Refresh</button>
+      <span class="count" id="pt-count"></span>
+    </div>
+    <div class="status" id="pt-info" style="margin-bottom:10px">Live players and their standing. Set or reset a score, or remove a disruptive player from the game. A removed player is dropped from the board and blocked from acting; Unban lets them back in.</div>
+    <div id="participants"></div>
+  </div></div>
+
+  <div class="panel"><div class="body">
+    <div class="rowline"><label class="k">Danger</label>
+      <input id="confirm" type="text" placeholder="type RESET" style="width:130px">
+      <button class="danger" id="reset">Reset round</button>
+    </div>
+  </div></div>
+
+  <script src="/static/js/avatars.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let KEY = '';
+    const msg = (t) => { $('msg').textContent = t; setTimeout(() => { if ($('msg').textContent === t) $('msg').textContent = ''; }, 3000); };
+
+    async function post(path, body) {
+      const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...body, key: KEY }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) { msg(d.detail || d.error || ('Error ' + r.status)); return null; }
+      return d;
+    }
+
+    async function refreshStatus() {
+      try {
+        const m = await (await fetch('/api/meta')).json();
+        const s = await (await fetch('/api/stats')).json();
+        $('status').innerHTML =
+          `<span>Phase <b>${m.phase}</b></span><span>Submissions <b>${m.frozen ? 'FROZEN' : 'open'}</b></span>` +
+          `<span>Cooldown <b>${m.cooldown}s</b></span><span>Players <b>${s.players}</b></span><span>Captures <b>${s.captures}</b></span>`;
+        $('cd').value = m.cooldown;
+        markPhase(m.phase); markFreeze(m.frozen);
+      } catch (e) {}
+    }
+    function markPhase(p) {
+      const atk = p === 'ATTACK';
+      $('ph-attack').className = atk ? 'on' : 'off';
+      $('ph-lab').className = p === 'DEFENSE_LAB' ? 'on' : 'off';
+      // show only the controls that belong to the current mode; common controls
+      // (view switch, submissions, cooldown, replays, participants) stay visible
+      const ac = $('attack-controls'); if (ac) ac.style.display = atk ? '' : 'none';
+      const dc = $('defense-controls'); if (dc) dc.style.display = atk ? 'none' : '';
+    }
+    function markFreeze(f) { $('freeze').className = f ? 'on' : 'off'; $('unfreeze').className = f ? 'off' : 'on'; }
+
+    $('save').onclick = () => { KEY = $('key').value; $('csv').href = '/api/present/export.csv?key=' + encodeURIComponent(KEY); msg('Key set.'); refreshReplays(); refreshUsers(); };
+    $('ph-attack').onclick = async () => { if (await post('/api/present/phase', { phase: 'ATTACK' })) { msg('Switched to attack view (scores unchanged).'); refreshStatus(); } };
+    $('ph-lab').onclick = async () => { if (await post('/api/present/phase', { phase: 'DEFENSE_LAB' })) { msg('Switched to defense view (scores unchanged).'); refreshStatus(); } };
+    $('at-start').onclick = async () => { if (await post('/api/present/attack/start', {})) { msg('New attack scenario — attack scores reset.'); refreshStatus(); } };
+    $('freeze').onclick = async () => { if (await post('/api/present/freeze', { frozen: true })) msg('Frozen.'); };
+    $('unfreeze').onclick = async () => { if (await post('/api/present/freeze', { frozen: false })) msg('Unfrozen.'); };
+    $('cd-apply').onclick = async () => { const d = await post('/api/present/cooldown', { seconds: parseFloat($('cd').value) }); if (d) msg('Cooldown ' + d.cooldown + 's.'); };
+    $('dr-start').onclick = async () => { const d = await post('/api/present/defense_round/start', { duration: parseFloat($('dr-dur').value) }); if (d) msg('Defense round started (' + Math.round(d.duration) + 's).'); };
+    $('dr-stop').onclick = async () => { if (await post('/api/present/defense_round/stop', {})) msg('Defense round stopped.'); };
+    $('dt-start').onclick = async () => { const d = await post('/api/present/defense_turn/start', { turn_seconds: parseFloat($('dt-dur').value) }); if (d) { msg('Defense rounds started (' + Math.round(d.turn_seconds) + 's/round).'); refreshStatus(); } };
+    $('dt-next').onclick = async () => { if (await post('/api/present/defense_turn/next', {})) msg('Skipped to result.'); };
+    $('dt-stop').onclick = async () => { if (await post('/api/present/defense_turn/stop', {})) msg('Defense rounds stopped.'); };
+    $('reset').onclick = async () => { const d = await post('/api/present/reset', { confirm: $('confirm').value }); if (d) { msg('Round reset.'); $('confirm').value = ''; } };
+    $('refresh-rep').onclick = refreshReplays;
+    $('clear-feed').onclick = async () => { if (await post('/api/present/clear_feed', {})) msg('Live feed cleared.'); };
+
+    async function refreshReplays() {
+      if (!KEY) { $('replays').innerHTML = '<div class="rep">Enter the presenter key to load replays.</div>'; return; }
+      try {
+        const r = await fetch('/api/present/replays?key=' + encodeURIComponent(KEY));
+        if (!r.ok) { $('replays').innerHTML = '<div class="rep">Bad key.</div>'; return; }
+        const { replays } = await r.json();
+        if (!replays.length) { $('replays').innerHTML = '<div class="rep">No notable captures yet.</div>'; return; }
+        $('replays').innerHTML = '';
+        replays.forEach((rp, i) => {
+          const row = document.createElement('div'); row.className = 'rep';
+          const t = document.createElement('span'); t.style.flex = '1';
+          t.textContent = `${rp.actor} — ${rp.flag} (${rp.title}) · ${rp.technique}`;
+          const b = document.createElement('button'); b.textContent = 'Spotlight';
+          b.onclick = async () => { if (await post('/api/present/spotlight', { index: i })) msg('Sent to wall.'); };
+          row.append(t, b); $('replays').appendChild(row);
+        });
+      } catch (e) {}
+    }
+
+    async function refreshUsers() {
+      if (!KEY) { $('participants').innerHTML = '<div class="pt">Enter the presenter key to load participants.</div>'; $('pt-count').textContent = ''; return; }
+      // don't clobber a score field the host is editing
+      const act = document.activeElement;
+      if (act && act.classList && act.classList.contains('sc')) return;
+      let d;
+      try {
+        const r = await fetch('/api/present/users?key=' + encodeURIComponent(KEY));
+        if (!r.ok) { $('participants').innerHTML = '<div class="pt">Bad key.</div>'; return; }
+        d = await r.json();
+      } catch (e) { return; }
+      const users = d.users || [];
+      $('pt-count').textContent = users.length + ' total · ' + (d.present || 0) + ' live';
+      if (!users.length) { $('participants').innerHTML = '<div class="pt">No players yet.</div>'; return; }
+      $('participants').innerHTML = '';
+      users.forEach((u) => $('participants').appendChild(userRow(u)));
+    }
+
+    function userRow(u) {
+      const row = document.createElement('div'); row.className = 'pt';
+      if (window.TZAvatars) {
+        const av = document.createElement('span'); av.className = 'av';
+        av.appendChild(TZAvatars.chip(u.avatar || 0, 22)); row.appendChild(av);
+      }
+      const nm = document.createElement('span'); nm.className = 'nm' + (u.banned ? ' banned' : '');
+      nm.textContent = u.username; row.appendChild(nm);
+      const badge = document.createElement('span');
+      if (u.banned) { badge.className = 'badge b-ban'; badge.textContent = 'BANNED'; }
+      else if (u.defending) { badge.className = 'badge b-turn'; badge.textContent = 'TURN'; }
+      else if (u.present) { badge.className = 'badge b-live'; badge.textContent = 'LIVE'; }
+      else { badge.className = 'badge b-idle'; badge.textContent = 'IDLE'; }
+      row.appendChild(badge);
+      const meta = document.createElement('span'); meta.className = 'meta';
+      meta.textContent = u.score + ' pts · ' + u.flags + ' flags' + (u.defense_score ? ' · def ' + u.defense_score : '');
+      row.appendChild(meta);
+      const spacer = document.createElement('span'); spacer.className = 'spacer'; row.appendChild(spacer);
+      const sc = document.createElement('input'); sc.type = 'number'; sc.className = 'sc'; sc.step = '10'; sc.value = u.score;
+      row.appendChild(sc);
+      const setb = document.createElement('button'); setb.textContent = 'Set';
+      setb.onclick = async () => {
+        const d = await post('/api/present/user/score', { uid: u.uid, mode: 'set', value: parseInt(sc.value, 10) || 0 });
+        if (d) { msg(u.username + ' → ' + d.score + ' pts.'); refreshUsers(); }
+      };
+      const rst = document.createElement('button'); rst.textContent = 'Reset';
+      rst.onclick = async () => {
+        if (await post('/api/present/user/score', { uid: u.uid, mode: 'reset' })) { msg(u.username + ' score reset.'); refreshUsers(); }
+      };
+      const ban = document.createElement('button'); ban.textContent = u.banned ? 'Unban' : 'Ban';
+      ban.className = u.banned ? '' : 'danger';
+      ban.onclick = async () => {
+        if (await post('/api/present/user/ban', { uid: u.uid, banned: !u.banned })) {
+          msg(u.username + (u.banned ? ' reinstated.' : ' removed from the game.')); refreshUsers();
+        }
+      };
+      row.append(setb, rst, ban);
+      return row;
+    }
+
+    $('refresh-users').onclick = refreshUsers;
+
+    refreshStatus(); setInterval(() => { refreshStatus(); refreshUsers(); }, 3000);
+    refreshReplays();
+    refreshUsers();
+  </script>
+</body>
+</html>

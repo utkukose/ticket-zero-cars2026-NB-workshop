@@ -1,0 +1,35 @@
+services:
+  ticket-zero:
+    build: .
+    # Host port 8090 is mapped to the container's 8000. Players open http://<host>:8090
+    ports:
+      - "8090:8000"
+    environment:
+      # --- Secrets: replace both before any public deployment ---
+      TZ_SECRET: "change-this-to-a-long-random-string"   # signs player tokens
+      TZ_PRESENTER_KEY: "change-this-presenter-key"       # unlocks /control
+
+      # --- Attack phase ---
+      TZ_COOLDOWN: "2.5"        # minimum seconds between a player's prompts
+      TZ_TICKET_MAX: "800"      # max characters per prompt
+      TZ_RATE_MAX: "40"         # max prompts per rate window (anti-spam)
+      TZ_LEAD_BONUS: "100"      # bonus points for taking the lead
+
+      # --- Defense rounds ---
+      TZ_DEFENSE_ROUNDS: "6"    # rounds per defense game
+      TZ_ROUND_SECONDS: "30"    # pick window per round
+      TZ_TURN_PREP: "5"         # seconds before round 1 (players mark present)
+      TZ_ROUND_RESULT: "7"      # result display per round
+
+      # --- Presence ---
+      TZ_IDLE_LIMIT: "240"      # drop a player idle this long (seconds)
+      TZ_QUEUE_WINDOW: "150"    # presence window for live counts
+
+      # --- Storage ---
+      TZ_DB: "/app/data/ticketzero.db"
+    volumes:
+      - ticketzero-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  ticketzero-data:

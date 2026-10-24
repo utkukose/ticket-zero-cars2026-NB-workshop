@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use these materials, please cite them as below."
+title: "Ticket Zero: A Live Prompt-Injection CTF for AI Assistant Security (IEEE CARS 2026 Workshop)"
+abstract: >-
+  Workshop materials and an interactive, real-time capture-the-flag application
+  for the IEEE CARS 2026 workshop "Cybersecurity in the Age of AI Assistants:
+  What Everyone Should Know". Participants attack a simulated support-desk agent
+  through prompt injection, then switch sides and defend it.
+type: software
+authors:
+  - family-names: "Köse"
+    given-names: "Utku"
+    orcid: "https://orcid.org/0000-0002-9652-6415"
+    affiliation: "Süleyman Demirel University, Isparta, Türkiye"
+version: "1.0.0"
+date-released: "2026-10-24"
+license: MIT
+url: "https://github.com/utkukose/ticket-zero-cars2026-NB-workshop"
+repository-code: "https://github.com/utkukose/ticket-zero-cars2026-NB-workshop"
+keywords:
+  - prompt injection
+  - AI assistant security
+  - large language models
+  - capture the flag
+  - indirect prompt injection
+  - LLM security
+  - agent security
+  - cybersecurity education

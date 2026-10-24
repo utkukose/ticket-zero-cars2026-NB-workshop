@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ticket Zero — IEEE CARS 2026 Workshop</title>
+<meta name="description" content="A live prompt-injection capture-the-flag game for the IEEE CARS 2026 workshop, Cybersecurity in the Age of AI Assistants. Attack a simulated support-desk AI, then defend it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14122b; --bg2:#100e22; --panel:#1e1b3a; --panel2:#262250; --line:#3a3470;
+    --ink:#e8e6ff; --dim:#9a93c9; --cyan:#37d6ff; --magenta:#ff3d81; --mint:#58f5b0;
+    --gold:#ffd23f; --amber:#ffae42;
+    --disp:'Press Start 2P', monospace; --term:'VT323', monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:
+      radial-gradient(1100px 600px at 50% -10%, #231a4d 0%, rgba(35,26,77,0) 60%),
+      var(--bg);
+    color:var(--ink); font-family:var(--term); font-size:21px; line-height:1.5;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:1100px; margin:0 auto; padding:0 16px}
+  a{color:var(--cyan); text-decoration:none; border-bottom:2px solid rgba(55,214,255,.4)}
+  a:hover{border-color:var(--cyan)}
+  h1,h2,h3{font-family:var(--disp); font-weight:400; line-height:1.4; letter-spacing:.5px}
+  .disp{font-family:var(--disp)}
+  .dim{color:var(--dim)}
+
+  /* hero */
+  header{padding:48px 0 30px; text-align:center; border-bottom:2px solid var(--line)}
+  .logo{font-family:var(--disp); font-size:clamp(30px,8vw,62px); color:var(--cyan);
+    text-shadow:4px 4px 0 var(--magenta); margin:0}
+  .conf{font-family:var(--disp); font-size:clamp(8px,2.3vw,11px); color:var(--gold);
+    margin:18px 0 0; letter-spacing:1px}
+  .htitle{font-size:clamp(15px,3.4vw,22px); color:var(--ink); margin:22px auto 0; max-width:780px}
+  .sub{color:var(--dim); max-width:680px; margin:14px auto 0; font-size:clamp(17px,2.6vw,22px)}
+  .cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:28px 0 6px}
+  .btn{font-family:var(--disp); font-size:11px; padding:14px 18px; border:2px solid var(--line);
+    background:var(--panel2); color:var(--ink); cursor:pointer; display:inline-block; line-height:1.5}
+  .btn:hover{border-color:var(--cyan)}
+  .btn.go{background:var(--cyan); color:#06202b; border-color:var(--cyan)}
+  .btn.mag{background:var(--magenta); color:#2a0413; border-color:var(--magenta)}
+  .btn.ghost{background:transparent}
+  .author{color:var(--dim); margin-top:24px; font-size:18px}
+  .author b{color:var(--ink); font-family:var(--disp); font-size:12px}
+
+  /* sections */
+  section{padding:46px 0; border-bottom:2px solid var(--line)}
+  .kicker{font-family:var(--disp); font-size:10px; color:var(--amber); letter-spacing:1px; margin:0 0 6px}
+  h2.title{font-size:clamp(16px,3.6vw,26px); color:var(--ink); margin:0 0 20px}
+  p{margin:0 0 14px}
+  .lead{max-width:760px}
+
+  /* two phases */
+  .phases{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  .phase{border:2px solid var(--line); background:var(--panel); padding:22px}
+  .phase.atk{border-color:var(--magenta)}
+  .phase.def{border-color:var(--mint)}
+  .phase .tag{font-family:var(--disp); font-size:11px; padding:6px 9px; display:inline-block; margin-bottom:12px}
+  .phase.atk .tag{background:var(--magenta); color:#2a0413}
+  .phase.def .tag{background:var(--mint); color:#06301f}
+  .phase h3{font-size:14px; margin:0 0 10px; color:var(--ink)}
+
+  /* card grids */
+  .grid{display:grid; gap:12px}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .card{border:2px solid var(--line); background:var(--panel); padding:16px}
+  .card .nm{font-family:var(--disp); font-size:11px; color:var(--gold); margin-bottom:8px; line-height:1.5}
+  .card.mag .nm{color:var(--magenta)} .card.cy .nm{color:var(--cyan)} .card.mi .nm{color:var(--mint)}
+  .card .d{color:var(--dim); font-size:19px}
+  .weak .nm{color:var(--amber)}
+
+  /* shots */
+  figure{margin:0}
+  .shot{width:100%; display:block; border:2px solid var(--line); background:var(--bg2)}
+  .hero-shot{margin-top:8px}
+  cap, figcaption{display:block; color:var(--dim); font-size:18px; margin-top:8px}
+  .gallery{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+
+  /* run */
+  pre{background:var(--bg2); border:2px solid var(--line); padding:16px; overflow-x:auto;
+    font-family:var(--term); font-size:19px; color:var(--mint); line-height:1.45}
+  code{font-family:var(--term); color:var(--mint)}
+
+  /* footer */
+  footer{padding:40px 0; text-align:center; color:var(--dim); font-size:18px}
+  footer .fname{font-family:var(--disp); font-size:12px; color:var(--cyan); margin-bottom:10px}
+  footer .vn{color:var(--amber); margin:16px 0}
+  .badges{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:22px 0}
+  .badges span{font-family:var(--disp); font-size:8px; color:#1a1530; background:var(--gold);
+    padding:7px 9px; border:2px solid var(--line)}
+
+  @media (max-width:720px){
+    body{font-size:20px}
+    .phases{grid-template-columns:1fr}
+    .g3{grid-template-columns:1fr}
+    .gallery{grid-template-columns:1fr}
+    .btn{font-size:10px; padding:12px 14px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1 class="logo">TICKET ZERO</h1>
+    <p class="conf">IEEE CARS 2026 &nbsp;·&nbsp; ONLINE &nbsp;·&nbsp; 28 OCT 2026</p>
+    <p class="htitle">Cybersecurity in the Age of AI Assistants: What Everyone Should Know</p>
+    <p class="sub">A live capture-the-flag game. A room attacks a simulated support-desk AI through prompt injection, then switches sides and defends it.</p>
+    <div class="cta">
+      <a class="btn go" id="join" href="#" target="_blank" rel="noopener">▶ Join the live range</a>
+      <a class="btn mag" href="docs/prompt-injection-primer.md">Read the primer</a>
+      <a class="btn ghost" href="https://github.com/utkukose/ticket-zero-cars2026-NB-workshop" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+    <p class="author">Presented by <b>Prof. Dr. Utku Köse</b><br>Süleyman Demirel University · <a href="https://orcid.org/0000-0002-9652-6415" target="_blank" rel="noopener">ORCID</a> · <a href="https://www.utkukose.com" target="_blank" rel="noopener">utkukose.com</a></p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <figure>
+      <img class="shot hero-shot" src="screenshots/wall.png" alt="The shared wall during the attack phase, showing the agent core under siege, the leaderboard, and the live capture feed">
+      <figcaption>The shared wall. Everyone in the room watches the agent core, the leaderboard, and every attempt as it lands.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">WHY THIS MATTERS</p>
+    <h2 class="title">Assistants that act turn a message into an instruction</h2>
+    <p class="lead dim">AI assistants are moving from answering questions to taking actions: reading tickets, looking up records, issuing credits, sending messages. That means a message is no longer only a message. It can be an instruction the assistant obeys. Prompt injection is the name for that problem, and it is the single most important security idea for anyone building with or relying on AI assistants today. This workshop makes it tangible by letting the room do it, then defend against it.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">HOW IT PLAYS</p>
+    <h2 class="title">Two phases</h2>
+    <div class="phases">
+      <div class="phase atk">
+        <span class="tag">ATTACK</span>
+        <h3>Break the agent</h3>
+        <p class="dim">Write a ticket to SUPPORTBOT and watch its console react step by step. Climb a ladder of objectives: map the agent's hidden tools, pry out a confidential code, push a credit past policy, exfiltrate another customer's data, and plant an instruction that runs later. Every capture shows why it matters in a real system.</p>
+      </div>
+      <div class="phase def">
+        <span class="tag">DEFENSE</span>
+        <h3>Defend the agent</h3>
+        <p class="dim">Switch sides. Each round shows two possible next attacks. Arm up to two architectural controls and commit before the wave fires. The control that best fits scores full; the weak phrase-blocklist scores nothing. No single control stops everything without turning away a real customer, which is the point.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">ATTACK PHASE</p>
+    <h2 class="title">Capture the flags</h2>
+    <div class="grid g3">
+      <div class="card mag"><div class="nm">Map the agent</div><div class="d">Enumerate the agent's tools, including the undocumented ones.</div></div>
+      <div class="card mag"><div class="nm">Loose lips</div><div class="d">Make the agent disclose an internal secret through authority framing.</div></div>
+      <div class="card mag"><div class="nm">Free money</div><div class="d">Issue a credit beyond policy, or to an account that is not yours.</div></div>
+      <div class="card mag"><div class="nm">Postman</div><div class="d">Exfiltrate another customer's record through an external tool.</div></div>
+      <div class="card mag"><div class="nm">Sleeper</div><div class="d">Plant an instruction in a profile field and make the agent run it on lookup.</div></div>
+      <div class="card mag"><div class="nm">Kill chain</div><div class="d">Chain reconnaissance, disclosure, and exfiltration into one breach.</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">DEFENSE PHASE</p>
+    <h2 class="title">Arm the defenses</h2>
+    <div class="grid g3">
+      <div class="card mi"><div class="nm">Separate read from act</div><div class="d">Treat the ticket and retrieved text as data only. No action is derived from it.</div></div>
+      <div class="card mi"><div class="nm">Limit connections</div><div class="d">Disconnect external tools so nothing can leave the system.</div></div>
+      <div class="card mi"><div class="nm">Human in the loop</div><div class="d">Queue consequential actions for a person to approve.</div></div>
+      <div class="card mi"><div class="nm">Check the output</div><div class="d">Scan anything leaving the agent for secrets and personal data.</div></div>
+      <div class="card weak"><div class="nm">Block bad phrases</div><div class="d">A blocklist that is easy to slip past. Included to be defeated.</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">A LOOK INSIDE</p>
+    <h2 class="title">The range</h2>
+    <div class="gallery">
+      <figure><img class="shot" src="screenshots/player-attack.png" alt="Player attack view with the compose panel, the agent console, and the flag ladder"><figcaption>Attack: write a ticket, read what the agent did, capture flags.</figcaption></figure>
+      <figure><img class="shot" src="screenshots/player-defense.png" alt="Player defense view with the two candidate attacks and the armed controls"><figcaption>Defense: two possible attacks, arm up to two controls, commit.</figcaption></figure>
+      <figure><img class="shot" src="screenshots/tutorial-attack.png" alt="The first-run tutorial, color-coded for attack mode"><figcaption>A guided tutorial explains both phases, color-coded.</figcaption></figure>
+      <figure><img class="shot" src="screenshots/control.png" alt="The facilitator control panel"><figcaption>The facilitator drives the session from a private panel.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">RUN YOUR OWN</p>
+    <h2 class="title">Self-hosting</h2>
+    <p class="lead dim">Ticket Zero is one small server with no external dependencies and no external AI calls. The agent is a deterministic simulation, so the game is reproducible and runs offline. Set two secrets and start it with Docker:</p>
+    <pre>git clone https://github.com/utkukose/ticket-zero-cars2026-NB-workshop.git
+cd ticket-zero-cars2026-NB-workshop
+# edit TZ_SECRET and TZ_PRESENTER_KEY in docker-compose.yml, then:
+docker compose up -d --build</pre>
+    <p class="dim">Players open <code>/</code>, the room watches <code>/wall</code>, and the facilitator drives <code>/control</code>. The <a href="FACILITATOR.md">facilitator guide</a> walks through a full session, and the <a href="docs/prompt-injection-primer.md">primer</a> covers every technique and defense with references.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fname">Prof. Dr. Utku Köse</div>
+    <div class="dim">Süleyman Demirel University, Isparta, Türkiye · YAZEM Founding Director</div>
+    <div class="dim"><a href="https://orcid.org/0000-0002-9652-6415" target="_blank" rel="noopener">ORCID 0000-0002-9652-6415</a> · <a href="https://www.utkukose.com" target="_blank" rel="noopener">utkukose.com</a> · <a href="https://github.com/utkukose" target="_blank" rel="noopener">github.com/utkukose</a></div>
+    <div class="badges">
+      <span>IEEE CARS 2026</span><span>1-HOUR WORKSHOP</span><span>CONTENT CC BY 4.0</span><span>CODE MIT</span>
+    </div>
+    <div class="vn">This workshop is updated in line with current developments in the field. First version: October 2026.</div>
+    <div class="dim" style="max-width:720px;margin:0 auto">Developed through human-AI collaboration. Human intellectual knowledge and expertise are the fundamental starting point of the workshop; the author guides and supervises every stage, and the final version is presented only after the author's review and approval.</div>
+  </div>
+</footer>
+
+<script>
+  // Where the "Join the live range" button points during a session.
+  // Set this to the address where the server is running, then re-publish.
+  // Leave it as-is to show the join link only during the live workshop.
+  var JOIN_URL = "http://37.148.208.183:8090";
+
+  (function () {
+    var a = document.getElementById('join');
+    if (JOIN_URL) {
+      a.href = JOIN_URL;
+    } else {
+      a.textContent = '▶ Join link shared during the session';
+      a.removeAttribute('target');
+      a.addEventListener('click', function (e) { e.preventDefault(); });
+      a.style.opacity = '.7';
+    }
+  })();
+</script>
+
+</body>
+</html>
