@@ -78,7 +78,7 @@ The run sheet for running a live session is in [FACILITATOR.md](FACILITATOR.md).
 <td width="50%"><a href="https://utkukose.github.io/ticket-zero-cars2026-NB-workshop/part2.html"><img src="docs/images/site_part2.png" alt="Part 2 page"></a></td>
 </tr>
 <tr>
-<td><sub>Part 1. Hide an instruction in the ticket and the boundary between trusted and untrusted text disappears.</sub></td>
+<td><sub>Part 1. From today's agentic AI to its weak spot: prompt injection is the top risk for LLM apps, grounded in the literature.</sub></td>
 <td><sub>Part 2. Attack a small in-browser copy of the agent; the console is compromised step by step.</sub></td>
 </tr>
 <tr>

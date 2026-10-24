@@ -143,8 +143,9 @@
     var visited = TZSite.store.get("visited", {}) || {};
     var n = ["start", "p1", "p2", "p3", "p4", "close"].filter(function (id) { return visited[id]; }).length;
     var keyed = [
-      { k: "poll:p1-s1", q: "No defenses, planted line", right: "b", txt: "the agent may obey it" },
-      { k: "poll:p1-s3", q: "Harder to defend", right: "b", txt: "indirect injection" },
+      { k: "poll:p1-sec", q: "Top risk for LLM apps (OWASP)", right: "b", txt: "prompt injection" },
+      { k: "poll:p1-inj", q: "Harder to defend", right: "b", txt: "indirect injection" },
+      { k: "poll:p1-ticket", q: "No defenses, planted line", right: "b", txt: "the agent may obey it" },
       { k: "poll:p2-s1", q: "What opens the door", right: "b", txt: "claiming authority" },
       { k: "poll:p3-s1", q: "Phrase blocklist vs authority attack", right: "b", txt: "the disguise slips past" }
     ];

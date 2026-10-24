@@ -10,7 +10,7 @@
     { id: "start", href: "index.html", label: "Start", short: "Start", title: "Start here", role: "", dur: "",
       question: "How the hour is organized." },
     { id: "p1", href: "part1.html", label: "Part 1", short: "1", title: "The problem", role: "Setup", dur: "~8 min",
-      question: "Why can anyone whose text reaches an assistant give it instructions?" },
+      question: "What today's AI can do, why it is still open to prompt-based attacks, and the support desk that makes it concrete." },
     { id: "p2", href: "part2.html", label: "Part 2", short: "2", title: "The attacks", role: "Attack", dur: "~15 min",
       question: "Which disguises get a request past the agent?" },
     { id: "p3", href: "part3.html", label: "Part 3", short: "3", title: "The defenses", role: "Defense", dur: "~12 min",
