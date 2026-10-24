@@ -1,10 +1,14 @@
 <div align="center">
 
-# Ticket Zero
+<img src="assets/logo.png" alt="Ticket Zero" width="620">
 
-**IEEE CARS 2026 Workshop · Cybersecurity in the Age of AI Assistants: What Everyone Should Know**
+### Cybersecurity in the Age of AI Assistants: What Everyone Should Know
 
-*A live, real-time capture-the-flag game where a room attacks a simulated support-desk AI through prompt injection, then switches sides and defends it.*
+**IEEE CARS 2026 Workshop**
+
+*An interactive lesson on prompt injection, and a live capture-the-flag game where a room attacks a simulated support-desk AI, then switches sides and defends it.*
+
+**▶ The interactive lesson: [utkukose.github.io/ticket-zero-cars2026-NB-workshop](https://utkukose.github.io/ticket-zero-cars2026-NB-workshop/)**
 
 ![First version](https://img.shields.io/badge/First%20version-October%202026-566A73)
 ![IEEE CARS 2026](https://img.shields.io/badge/IEEE%20CARS-2026-1F5F8B)
@@ -38,11 +42,13 @@ AI assistants are moving from answering questions to taking actions. They read t
 
 This workshop makes the idea tangible. Instead of slides about attacks, the room plays against a simulated support-desk agent for a fictional company, Northwind Devices. In the attack phase, participants try to make the agent break its own rules. In the defense phase, they switch sides and arm the agent's architecture against the same attacks. The game is Ticket Zero, a self-contained web application that runs the whole thing live during the session.
 
-The workshop is presented online at IEEE CARS 2026 (Grand Forks, North Dakota, USA), organized by the Center for Cyber Security Research at the University of North Dakota, on 28 October 2026.
+The workshop is the R4 session at IEEE CARS 2026 (Grand Forks, North Dakota, USA), organized by the Center for Cyber Security Research at the University of North Dakota, presented online on 28 October 2026 [5].
 
 ## What this teaches
 
 By the end of the session, a participant should be able to explain what prompt injection is and why it differs from ordinary input validation. They should be able to tell direct injection, where the attacker types the instruction, from indirect injection, where the instruction is planted in content the assistant reads later [2]. They should recognize the common techniques, including authority framing, delimiter and encoding tricks, prompt extraction, and stored injection. Finally, they should understand why a blocklist of attack phrases does not work, and which architectural controls do: separating reading from acting, limiting what the agent can connect to, putting a human in front of consequential actions, and checking what leaves the agent [1][4].
+
+The session reaches past builders, too. It covers what should never be typed into a chat tool, and why prompt injection and phishing share a root: a confident, official tone is not proof of authority, for a person or for an AI. It closes on the career paths this field is opening, from security engineering and red-teaming to privacy, incident response, and governance.
 
 The full treatment of every technique and defense is in the [prompt-injection primer](docs/prompt-injection-primer.md).
 
@@ -132,7 +138,7 @@ TZ_SECRET="..." TZ_PRESENTER_KEY="..." uvicorn server.app:app --host 0.0.0.0 --p
 | Path | What it holds |
 |---|---|
 | `README.md` | This page |
-| `index.html` | The workshop landing page, published with GitHub Pages |
+| `index.html` | The interactive lesson, published with GitHub Pages |
 | `FACILITATOR.md` | How to run a live session |
 | `docs/prompt-injection-primer.md` | The techniques and defenses, with references |
 | `screenshots/` | The images used on this page |
@@ -167,6 +173,8 @@ The source code is licensed under the MIT License (`LICENSE`). The workshop cont
 [3] Perez, F., & Ribeiro, I. (2022). *Ignore previous prompt: Attack techniques for language models*. arXiv:2211.09527. NeurIPS 2022 ML Safety Workshop. https://arxiv.org/abs/2211.09527
 
 [4] National Institute of Standards and Technology. (2025). *Adversarial machine learning: A taxonomy and terminology of attacks and mitigations* (NIST AI 100-2e2025). https://csrc.nist.gov/pubs/ai/100/2/e2025/final
+
+[5] IEEE. (2026). *Cybersecurity in the age of AI assistants: What everyone should know* (R4 workshop listing). IEEE vTools Events. https://events.vtools.ieee.org/m/575010
 
 ## Human-AI collaboration
 
