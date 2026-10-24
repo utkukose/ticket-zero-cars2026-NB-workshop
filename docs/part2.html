@@ -83,7 +83,7 @@
 <script src="assets/pixelart.js"></script>
 <script src="assets/agent.js"></script>
 <script>
-  TZSite.poll(document.getElementById("poll1"), "p2-s1", function () { TZSite.reveal(document.getElementById("t1")); });
+  TZSite.predict(document.getElementById("poll1"), document.getElementById("t1"), "p2-s1", "b");
   TZAgent.mount(document.getElementById("agent-demo"), { defenses: false });
 </script>
 </body>

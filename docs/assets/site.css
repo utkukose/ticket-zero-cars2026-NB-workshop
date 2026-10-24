@@ -116,6 +116,8 @@ code { font-family: var(--term); background: var(--bg2); border: 1px solid var(-
 .poll button { font-family: var(--term); font-size: 1.05rem; color: var(--ink); background: var(--bg2); border: 2px solid var(--line); padding: 9px 16px; cursor: pointer; }
 .poll button:hover { border-color: var(--accent); }
 .poll button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.poll button.right { background: rgba(88, 245, 176, 0.14); border-color: var(--mint); color: var(--ink); }
+.poll button.wrong { background: rgba(255, 61, 129, 0.14); border-color: var(--magenta); color: var(--ink); }
 .poll-label { font-family: var(--disp); font-size: 0.6rem; line-height: 1.6; margin-bottom: 10px; }
 .takeaway { margin: 26px 0 0; font-size: 1.15rem; line-height: 1.45; padding: 10px 0 10px 18px; border-left: 6px solid var(--accent); max-width: 68ch; }
 .takeaway[hidden] { display: none; }

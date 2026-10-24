@@ -36,8 +36,8 @@
         <p class="poll-label">Your prediction</p>
         <div class="poll" id="poll1">
           <button type="button" data-value="a">Yes, it blocks it</button>
-          <button type="button" data-value="b">No, the disguise slips past</button>
-          <button type="button" data-value="c">It blocks everything, including real customers</button>
+          <button type="button" data-value="b">No, the disguise slips right past</button>
+          <button type="button" data-value="c">Only with a long enough phrase list</button>
         </div>
         <div class="takeaway" id="t1" hidden>A blocklist catches only the undisguised attempts. Authority framing, a fake system tag, an encoded payload, or data-planted instructions all carry the same objective past it, and it also rejects legitimate customers whose wording happens to match. It is the one control in the game that is there to be defeated. The useful controls act on the architecture.</div>
       </div>
@@ -87,7 +87,7 @@
 <script src="assets/pixelart.js"></script>
 <script src="assets/agent.js"></script>
 <script>
-  TZSite.poll(document.getElementById("poll1"), "p3-s1", function () { TZSite.reveal(document.getElementById("t1")); });
+  TZSite.predict(document.getElementById("poll1"), document.getElementById("t1"), "p3-s1", "b");
   TZAgent.mount(document.getElementById("agent-demo"));
 </script>
 </body>

@@ -140,10 +140,10 @@
 <script src="assets/bot.js"></script>
 <script src="assets/pixelart.js"></script>
 <script>
-  TZSite.poll(document.getElementById("poll-cap"), "p1-cap", function () { TZSite.reveal(document.getElementById("t-cap")); });
-  TZSite.poll(document.getElementById("poll-sec"), "p1-sec", function () { TZSite.reveal(document.getElementById("t-sec")); });
-  TZSite.poll(document.getElementById("poll-inj"), "p1-inj", function () { TZSite.reveal(document.getElementById("t-inj")); });
-  TZSite.poll(document.getElementById("poll-ticket"), "p1-ticket", function () { TZSite.reveal(document.getElementById("t-ticket")); });
+  TZSite.predict(document.getElementById("poll-cap"), document.getElementById("t-cap"), "p1-cap", "b");
+  TZSite.predict(document.getElementById("poll-sec"), document.getElementById("t-sec"), "p1-sec", "b");
+  TZSite.predict(document.getElementById("poll-inj"), document.getElementById("t-inj"), "p1-inj", "b");
+  TZSite.predict(document.getElementById("poll-ticket"), document.getElementById("t-ticket"), "p1-ticket", "b");
   (function () {
     var on = false, btn = document.getElementById("injectBtn");
     btn.addEventListener("click", function () {

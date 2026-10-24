@@ -58,6 +58,30 @@
     var prev = store.get("poll:" + key, null);
     if (prev !== null) choose(prev, true);
   }
+  /* Prediction with feedback: every box starts closed. On the first click the
+     chosen option is marked right or wrong, the correct one is highlighted, and
+     only then is the reveal opened. Nothing is replayed on load, so the boxes
+     are always closed until the participant actually answers. The answer is
+     still recorded for the debrief. */
+  function predict(pollEl, revealEl, key, correct) {
+    if (!pollEl) return;
+    var btns = Array.prototype.slice.call(pollEl.querySelectorAll("button[data-value]"));
+    var done = false;
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (done) return; done = true;
+        var v = b.getAttribute("data-value");
+        btns.forEach(function (x) {
+          var xv = x.getAttribute("data-value");
+          if (correct && xv === correct) x.classList.add("right");
+          else if (xv === v) x.classList.add("wrong");
+          x.setAttribute("aria-pressed", String(xv === v));
+        });
+        store.set("poll:" + key, v);
+        if (revealEl) reveal(revealEl);
+      });
+    });
+  }
 
   /* ---------- theme (night default, paper optional) ---------- */
   function applyTheme(t) {
@@ -197,5 +221,5 @@
     b.addEventListener("click", function () { var first = document.querySelector("[data-station]"); if (first) first.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" }); });
   });
 
-  window.TZSite = { REPO: REPO, APP_URL: APP_URL, PAGES: PAGES, page: PAGES[pageIndex], reduceMotion: reduceMotion, store: store, el: el, reveal: reveal, poll: poll, wait: wait, toggleTheme: toggleTheme };
+  window.TZSite = { REPO: REPO, APP_URL: APP_URL, PAGES: PAGES, page: PAGES[pageIndex], reduceMotion: reduceMotion, store: store, el: el, reveal: reveal, poll: poll, predict: predict, wait: wait, toggleTheme: toggleTheme };
 })();
