@@ -25,7 +25,8 @@
   </section>
 
   <section class="station" data-station>
-    <div class="wrap">
+    <div class="wrap grid-2">
+      <div>
       <div class="station-head">
         <p class="station-index">Station 1 · predict</p>
         <h2>The tempting wrong answer</h2>
@@ -40,15 +41,20 @@
         </div>
         <div class="takeaway" id="t1" hidden>A blocklist catches only the undisguised attempts. Authority framing, a fake system tag, an encoded payload, or data-planted instructions all carry the same objective past it, and it also rejects legitimate customers whose wording happens to match. It is the one control in the game that is there to be defeated. The useful controls act on the architecture.</div>
       </div>
+      </div>
+      <div data-art="crack" data-art-cap="A blunt filter cracks"></div>
     </div>
   </section>
 
   <section class="station alt" data-station>
     <div class="wrap">
-      <div class="station-head">
-        <p class="station-index">Station 2 · the controls</p>
-        <h2>Four controls that actually hold</h2>
-        <p class="lead">No single one stops everything without also turning away a real customer, so a real deployment layers them.</p>
+      <div class="grid-2" style="align-items:center;margin-bottom:26px">
+        <div class="station-head" style="margin-bottom:0">
+          <p class="station-index">Station 2 · the controls</p>
+          <h2>Four controls that actually hold</h2>
+          <p class="lead">No single one stops everything without also turning away a real customer, so a real deployment layers them.</p>
+        </div>
+        <div data-art="layers" data-art-cap="Layered, architectural controls"></div>
       </div>
       <div class="cards">
         <div class="card def"><div class="nm">Separate read from act</div><div class="d">Treat the ticket and retrieved text as data only, so no action is derived from it. The most general answer to injection, direct or indirect.</div></div>
@@ -77,6 +83,8 @@
 
 <footer data-footer></footer>
 <script src="assets/site.js"></script>
+<script src="assets/bot.js"></script>
+<script src="assets/pixelart.js"></script>
 <script src="assets/agent.js"></script>
 <script>
   TZSite.poll(document.getElementById("poll1"), "p3-s1", function () { TZSite.reveal(document.getElementById("t1")); });

@@ -122,15 +122,17 @@
   ];
   var V = { bad: ["v-bad", "COMPROMISED"], def: ["v-def", "DEFENDED"], res: ["v-res", "RESISTED"], ok: ["v-ok", "HANDLED"] };
 
-  function mount(root) {
+  function mount(root, opts) {
     if (!root) return;
+    opts = opts || {};
+    var showDef = opts.defenses !== false;   // defenses are introduced in Part 3
     var def = {}, facts = { pin: false, tools: false };
     root.classList.add("demo");
     root.innerHTML =
       '<div class="app"><h3 style="margin-top:0">Compose a ticket</h3><div class="presets"></div>' +
       '<textarea placeholder="&hellip;or write your own ticket to SUPPORTBOT"></textarea>' +
       '<button class="run" type="button">Send ticket &#9654;</button>' +
-      '<div class="defs"><div class="lbl">DEFENSES &middot; tap to arm</div></div></div>' +
+      (showDef ? '<div class="defs"><div class="lbl">DEFENSES &middot; tap to arm</div></div>' : '') + '</div>' +
       '<div class="app"><h3 style="margin-top:0">Agent console</h3><div class="vslot"></div>' +
       '<div class="console"><span class="muted">Send a ticket to see how the agent responds.</span></div>' +
       '<div class="lesson" hidden></div></div>';
@@ -144,6 +146,7 @@
     var dbox = root.querySelector(".defs");
     DEF.forEach(function (d) {
       def[d.k] = false;
+      if (!dbox) return;   // no defense panel in the attack-only demo
       var row = document.createElement("div"); row.className = "defrow" + (d.weak ? " weak" : "");
       row.innerHTML = '<span class="sw"><i></i></span><span class="dl">' + d.label + "</span>";
       row.addEventListener("click", function () { def[d.k] = !def[d.k]; row.classList.toggle("on", def[d.k]); });

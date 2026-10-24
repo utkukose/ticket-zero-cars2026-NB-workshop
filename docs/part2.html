@@ -25,7 +25,8 @@
   </section>
 
   <section class="station" data-station>
-    <div class="wrap">
+    <div class="wrap grid-2">
+      <div>
       <div class="station-head">
         <p class="station-index">Station 1 · predict</p>
         <h2>What opens the door?</h2>
@@ -40,6 +41,8 @@
         </div>
         <div class="takeaway" id="t1" hidden>Claiming authority works. The model reads the claim of being staff as if it were true, because privilege is asserted in the message, not actually proven. In the game this is the first rung of a ladder: the agent leaks a low-value escalation PIN, and that leaked PIN then unlocks the higher-value staff code.</div>
       </div>
+      </div>
+      <div data-art="bot:breach" data-art-cap="A convincing message walks it in"></div>
     </div>
   </section>
 
@@ -64,7 +67,7 @@
       <div class="station-head">
         <p class="station-index">Station 3 · try it</p>
         <h2>Attack the agent</h2>
-        <p class="lead">A small copy of the agent runs here in your browser, and nothing you type leaves it. Send the attack tickets and watch the console react step by step. Notice that the direct request is refused, but the authority and delimiter versions land. Leave the defenses off for now; Part 3 turns them on.</p>
+        <p class="lead">A small copy of the agent runs here in your browser, and nothing you type leaves it. There are no defenses yet: those come in Part 3. Send the attack tickets and watch the console react step by step. Notice that the direct request is refused, but the authority and delimiter versions land.</p>
       </div>
       <div id="agent-demo"></div>
       <div class="takeaway" style="margin-top:22px">Secrets shown here are fictional. The order matters: leaking the PIN first unlocks the staff code, exactly as in the live game.</div>
@@ -76,10 +79,12 @@
 
 <footer data-footer></footer>
 <script src="assets/site.js"></script>
+<script src="assets/bot.js"></script>
+<script src="assets/pixelart.js"></script>
 <script src="assets/agent.js"></script>
 <script>
   TZSite.poll(document.getElementById("poll1"), "p2-s1", function () { TZSite.reveal(document.getElementById("t1")); });
-  TZAgent.mount(document.getElementById("agent-demo"));
+  TZAgent.mount(document.getElementById("agent-demo"), { defenses: false });
 </script>
 </body>
 </html>
