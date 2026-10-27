@@ -5,7 +5,7 @@
   "use strict";
 
   var REPO = "utkukose/ticket-zero-cars2026-NB-workshop";
-  var APP_URL = "http://37.148.208.183:8090"; // the live range during a session
+  var APP_URL = "https://ticketzero.utkukose.com"; // the live range during a session
   var PAGES = [
     { id: "start", href: "index.html", label: "Start", short: "Start", title: "Start here", role: "", dur: "",
       question: "How the hour is organized." },
