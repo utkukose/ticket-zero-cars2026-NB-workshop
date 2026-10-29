@@ -11,6 +11,8 @@ Grand Forks, ND, USA · 28 October 2026 · about one hour, online session
 <a href="https://utkukose.github.io/ticket-zero-cars2026-NB-workshop/"><img src="https://img.shields.io/badge/Workshop%20site-Start%20here-37d6ff?style=for-the-badge&labelColor=14122b" height="44" alt="Open the workshop site"></a>
 &nbsp;&nbsp;
 <a href="https://github.com/utkukose/ticket-zero-cars2026-NB-workshop#ticket-zero-the-game"><img src="https://img.shields.io/badge/Ticket%20Zero-The%20CTF-ff3d81?style=for-the-badge&labelColor=14122b" height="44" alt="Ticket Zero, the capture-the-flag game"></a>
+&nbsp;&nbsp;
+<a href="https://colab.research.google.com/github/utkukose/ticket-zero-cars2026-NB-workshop/blob/main/notebook/ticket_zero_lab.ipynb"><img src="https://img.shields.io/badge/Hands--on%20lab-Open%20in%20Colab-ffae42?style=for-the-badge&labelColor=14122b" height="44" alt="Open the hands-on lab in Colab"></a>
 
 [![IEEE CARS 2026](https://img.shields.io/badge/IEEE%20CARS-2026-1F5F8B)](https://events.vtools.ieee.org/m/575010)
 [![Organised by UND C2SR](https://img.shields.io/badge/Organised%20by-UND%20C2SR-0E7A78)](https://engineering.und.edu/research/cyber-security/)
@@ -100,6 +102,12 @@ All pages run in the browser and send nothing anywhere. On every page the arrow 
 
 To publish the site, enable GitHub Pages in the repository settings with the source *Deploy from a branch*, branch `main`, folder `/docs`.
 
+## Hands-on lab (Colab)
+
+A single self-contained notebook, [`notebook/ticket_zero_lab.ipynb`](notebook/ticket_zero_lab.ipynb), accompanies the pages. It runs in the browser with no API key and no network: a tiny rule-based support agent that you attack, watch fail, then defend, with a matrix that shows which control stops which attack. The core is keyless and deterministic, and an optional final section repeats the same attacks against a real model when an API key is available. It is a generic teaching sandbox and does not reproduce or solve the live Ticket Zero flags.
+
+<a href="https://colab.research.google.com/github/utkukose/ticket-zero-cars2026-NB-workshop/blob/main/notebook/ticket_zero_lab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+
 ---
 
 ## Ticket Zero, the game
@@ -174,6 +182,8 @@ ticket-zero-cars2026-NB-workshop/
 │   ├── assets/                site.css, site.js and agent.js (the in-page agent)
 │   ├── images/                the lecture screenshots used in this README
 │   └── prompt-injection-primer.md   the techniques and defenses, with references
+├── notebook/
+│   └── ticket_zero_lab.ipynb  the keyless hands-on Colab lab
 ├── server/                    the Ticket Zero app: FastAPI backend
 │   ├── app.py                 REST, WebSocket and the game loop
 │   ├── engine.py              the deterministic agent simulation
